@@ -1,3 +1,5 @@
+# Run cell
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -16,3 +18,15 @@ t = 10  # Time to investment (year)
 v = risk_free_value(init_val, r, t)
 
 print(round(v, 2))
+
+# Input array
+t = np.array([x for x in np.arange(0, 100, 0.1)])
+
+
+#  Output array
+v = risk_free_value(init_val, r, t)
+
+plt.plot(t, v)
+plt.show()
+
+# %%
