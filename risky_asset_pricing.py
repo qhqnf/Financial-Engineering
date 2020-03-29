@@ -26,3 +26,29 @@ plt.show()
 
 
 # %%
+
+S0 = 100  # Initial price
+mu = 0.1  # Drift
+sigma = 0.23  # Volatility
+T = 1.0  # Time to maturity
+D = 252  # Trading days in 1 year
+dt = T / D  # Annualized Measure of 1 day
+N = 10000  # Number of trials
+
+# Create zero array
+S = np.zeros((D+1, N))
+S[0] = S0  # fill first row into initial value
+
+# simulation
+for t in range(1, D+1):
+    S[t] = S[t-1] * np.exp((mu - 0.5 * sigma ** 2) *
+                           dt + sigma * np.sqrt(dt) * np.random.randn(N))
+
+# plot graph
+plt.plot(S[:10000])
+plt.xlabel('day')
+plt.ylabel('price')
+plt.grid(True)
+
+
+# %%
