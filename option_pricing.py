@@ -42,12 +42,26 @@ T, S = np.meshgrid(T, S)
 call_value = europian_options(S, K, T, r, sigma, 'call')
 put_value = europian_options(S, K, T, r, sigma, 'put')
 
+# call option price to 3D
 trace = go.Surface(x=T, y=S, z=call_value)
 data = [trace]
 layout = go.Layout(title='Option Price',
                    scene={'xaxis': {'title': 'Maturity'}, 'yaxis': {'title': 'Spot Price'}, 'zaxis': {'title': 'Option Price'}})
 
 
-#fig = go.Figure(data=data, layout=layout)
-# iplot(fig)
+fig = go.Figure(data=data, layout=layout)
+iplot(fig)
+# %%
+
+# put option price to 3D
+trace = go.Surface(x=T, y=S, z=put_value)
+data = [trace]
+layout = go.Layout(title='Option Price',
+                   scene={'xaxis': {'title': 'Maturity'}, 'yaxis': {'title': 'Spot Price'}, 'zaxis': {'title': 'Option Price'}})
+
+
+fig = go.Figure(data=data, layout=layout)
+iplot(fig)
+
+
 # %%
