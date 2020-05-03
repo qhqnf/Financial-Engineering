@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import numpy as np
 import QuantLib as ql
+import math
 
 maturity_list = []
 yield_list = []
@@ -31,7 +32,11 @@ for row_items in bond_table[1:]:
 
 temp = maturity_list[1]
 maturity_list.remove(maturity_list[1])
-maturity_list.append(temp)
+maturity_list.insert(9, temp)
+
+temp = yield_list[1]
+yield_list.remove(yield_list[1])
+yield_list.insert(9, temp)
 
 
 # making date array
@@ -54,14 +59,33 @@ for period in period_array:
     maturity_date.append(modified_date)
 
 maturity_date_array = np.array(maturity_date)
-print(maturity_date_array)
 
+day_counter_list = maturity_date_array - start_date
+
+zero_rate_list = []
 
 # concatenate arrays
 maturity_array = np.array(maturity_list)
 yield_array = np.array(yield_list)
+day_counter_array = np.array(day_counter_list)
+
 
 bond = np.column_stack((maturity_array.T, yield_array.T,
-                        maturity_date_array.T))
+                        maturity_date_array.T, day_counter_array.T))
+
+for b in bond:
+    r = b[1]
+    days = b[3]
+    if days < 365:
+        dcf = 1/(1+r*days/360)
+    else:
+        dcf = 1/((1+r)**(days/360))
+
+    zero_rate = (math.log(1/dcf)) / (days/360)
+    zero_rate_list.append(zero_rate)
+
+zero_rate_array = np.array(zero_rate_list)
+
+bond = np.column_stack((bond, zero_rate_array.T))
 
 print(bond)
